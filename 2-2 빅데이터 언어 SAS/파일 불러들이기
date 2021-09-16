@@ -1,0 +1,23 @@
+#txt문 읽기
+data wghtclub;
+infile 'C:\Users\OWNER\Downloads\wghtclub.txt';
+input @1 indo 4.
+@6 name $ 19.
+@25 team $ 6.
+@32 strtwght 3.
+@36 endwght 3.;
+run;
+
+#csv문 읽기
+proc import
+datafile= 'C:\Users\OWNER\Downloads\wghtclub.csv'
+out=wg_csv dbms=csv replace;
+getnames=yes;
+run;
+
+#xlsx문 읽기
+proc import
+datafile='C:\Users\OWNER\Downloads\실습DATA.xlsx'
+out=exex dbms=xlsx replace;
+sheet="데이터2019";
+run;
