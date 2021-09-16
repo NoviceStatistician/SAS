@@ -10,7 +10,7 @@ run;
 
 #csv문 읽기
 proc import
-datafile= 'C:\Users\OWNER\Downloads\wghtclub.txt'
+datafile= 'C:\Users\OWNER\Downloads\wghtclub.csv'
 out=wg_csv dbms=csv replace;
 getnames=yes;
 run;
