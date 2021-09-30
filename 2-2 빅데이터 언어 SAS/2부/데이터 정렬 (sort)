@@ -1,0 +1,56 @@
+*id에 대해 오름차순
+proc sort data=data_app out=data_app3;
+by id;
+run;
+
+*id에 대해 내림차순
+proc sort data=data_app out=data_app4;
+by descending id;
+run;
+
+*여러 개 변수 정렬
+proc sort data=data_app out=data_app5;
+by sex year;
+run;
+
+proc sort data=data_app out=data_app6;
+by sex descending year;
+run;
+"앞의 sex에 대해 sort하고 각 sex 내에서 year을 sort함."
+
+
+/*
+SAS에서는 결측을 가장 작다고 판단함.
+후에, IF문 사용 할 때 유용하게 쓰임.
+*/
+
+*sort를 이용한 동일한 관측값 제거
+proc sort data=ex out=ex_u noduplicates;
+by idno;
+run;
+/*noduplicates옵션은 모든 변수의 값이 같을 때 지움. 맨 앞에거만 두고 나머지 뒤에 겹치는거 싹 지움.
+nodup까지만 적어도 됨. 나중에 nodupkey옵션도 나오는데 두 개는 다름.
+by idno는 idno순서로 오름차순 정렬해라임.*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
