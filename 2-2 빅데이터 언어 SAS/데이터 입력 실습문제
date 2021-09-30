@@ -33,9 +33,10 @@ run;
 
 *이러면 
 
+#태어난 지 100일 후 날짜 계산
 data data_app2;
 set data_app;
 format birth100 yymmdd10.;
-birth100=birth+100;
+birth100=birth+100-1;"태어난 날 하루 제외 해야 하기 때문에 1"
 label id='아이디' sex='성별' year='연령' job='직업' sal='연봉' birth='생년월일' birth100='날짜변수(백일)';
 run;
