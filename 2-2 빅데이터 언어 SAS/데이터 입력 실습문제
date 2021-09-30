@@ -1,11 +1,24 @@
-data data_app;
-input 아이디 성별 $ 연령 직업 $ 연봉 comma7. 생년월일 date10.;
+option validvarname=any;
+libname kyh 'C:\Users\OWNER\Desktop';
+data kyh.data_app;
+input id sex $ 4-7 year job $ 12-17 sal comma7. birth date10. ;
+format sal comma7. birth yymmdd10.;
 cards;
-01 남성 55 의사 100,000 23APR1963
-02 . 40 공무원 70,000  03MAY1978
-03 남성 25 교사  .      12JUN1993
-04 여성 30 교사 50,000  30JUL1988
-05 여성 40  의사 80,000  07NOV1978
-06 여성 30 공무원 60,000  05APR1988
+01 남성 55 의사  100,000 23APR1963
+02      40 공무원 70,000  3MAY1978
+03 남성 25 교사  .     12JUN1993
+04 여성 30 교 사 50,000  30JUL1988
+05 여성 40  의사  80,000  7NOV1978
+06 여성 30 공무원 60,000  5APR1988
 ;
+run;
+/*
+Q1. 03MAY1978은 에러 뜨고 3MAY1978으로 하면 됨.
+Q2. 03MAY1978 자리 수는 9개 인데 date9. 하면 에러나고 date10으로 해야 에러 안남.
+*/
+data data_app2;
+set data_app;
+format birth100 yymmdd10.;
+birth100=birth+100;
+label id='아이디' sex='성별' year='연령' job='직업' sal='연봉' birth='생년월일' birth100='날짜변수(백일)';
 run;
