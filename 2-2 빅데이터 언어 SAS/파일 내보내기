@@ -1,0 +1,12 @@
+proc export data=data_app2
+outfile="C:\Users\OWNER\Desktop\rla\100일 data.csv"
+replace dbms=csv;
+run;
+proc export data=data_app2
+outfile="C:\Users\OWNER\Desktop\rla\100일 data.xlsx"
+replace dbms=xlsx;
+run;
+proc export data=data_app2
+outfile="C:\Users\OWNER\Desktop\rla\100일 data.txt"
+replace dbms=tab;
+run;
