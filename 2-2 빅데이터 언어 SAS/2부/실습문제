@@ -23,12 +23,15 @@ proc sort data=data_s nodupkey;
 by sex;
 run;
 
-Q1.두 개 명령문 하나로 합칠 수 있나?
+/*Q1.두 개 명령문 하나로 합칠 수 있나?
 X. 두 번에 나눠서 해야함.
 Q2.결측값 있으면 그 데이터셋 어떻게 지움?
-if문 사용해서 지워야함.
+if문 사용해서 지워야함.*/
 
-
+Q.data_app 데이터에서 id sex sal에 포함된 data_app_m1과 id year job birth이 포함된 data_app_m2생성
+data data_app_m1(keep=id sex sal) data_app_m2(keep=id year job birth);
+set data_app;
+run;
 
 
 
