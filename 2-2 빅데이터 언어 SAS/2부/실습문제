@@ -1,4 +1,4 @@
-Q. data_app 데이터에서 성별로 가장 큰 연봉을 가진 대상자만을 포함하는 데이터 생성
+Q. data_app 데이터에서 성별로 가장 큰 연봉을 가진 대상자만을 포함하는 데이터 생성(유사한 문제 시험에 나옴)★
 
 option validvarname=any;
 
@@ -22,3 +22,15 @@ run;
 proc sort data=data_s nodupkey;
 by sex;
 run;
+
+Q1.두 개 명령문 하나로 합칠 수 있나?
+Q2.결측값 있으면 그 데이터셋 어떻게 지움?
+
+
+
+
+
+
+
+
+
