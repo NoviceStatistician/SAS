@@ -1,3 +1,4 @@
+-분리하기
 data 새로 만들 데이터셋;
 set 베이스로 사용할 기존 데이터셋;
 keep 기존 데이터 셋에서 변수(col)를 가져오겠다;
@@ -5,8 +6,8 @@ drop 기존 데이터 셋에서 변수(col)를 버리겠다;
 run;
 /*keep과 drop 중 더 합리적인거 선택해서 사용하면 됨.
 ex1.10개의 변수에서 1개 제외하고 다 가져오는 경우: drop 사용
-ex2.10개의 변수에서 3개만 가져오는 경우: keep 사용*/
-**자료를 쪼개더라도 id같은 key변수 하나는 둘 다 있어야지 나중에 합칠 수 있음.
+ex2.10개의 변수에서 3개만 가져오는 경우: keep 사용
+※자료를 쪼개더라도 id같은 key변수 하나는 둘 다 있어야지 나중에 합칠 수 있음.*/
 
 *다수의 새로운 데이터 만들기
 data ex_1(keep=idno name team) ex_2(keep=idno strtwght endwght);
@@ -30,6 +31,14 @@ set data_app;
 run;
 
 
+-합치기(행 합치기)
+A set: id name 50개
+B set: id name 100개
+(변수 명, 데이터셋 다 같음.)
+*150개로 행 합치기
+data AB;
+set A B;
+run;
 
 
 
@@ -37,6 +46,11 @@ run;
 
 
 
+
+
+
+
+*베이스 데이터셋
 option validvarname=any;
 data data_app;
 input id sex $ year job $ sal comma7. birth date10. ;
@@ -50,9 +64,3 @@ cards;
 06 여성 30 공무원 60,000 05APR1988
 ;
 run;
-
-
-
-
-
-
