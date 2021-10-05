@@ -33,6 +33,10 @@ run;
 
 
 
+
+
+
+
 option validvarname=any;
 data data_app;
 input id sex $ year job $ sal comma7. birth date10. ;
