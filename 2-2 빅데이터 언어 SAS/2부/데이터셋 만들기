@@ -6,6 +6,12 @@ run;
 /*keep과 drop 중 더 합리적인거 선택해서 사용하면 됨.
 ex1.10개의 변수에서 1개 제외하고 다 가져오는 경우: drop 사용
 ex2.10개의 변수에서 3개만 가져오는 경우: keep 사용*/
+**자료를 쪼개더라도 id같은 key변수 하나는 둘 다 있어야지 나중에 합칠 수 있음.
+
+*다수의 새로운 데이터 만들기
+data ex_1(keep=idno name team) ex_2(keep=idno strtwght endwght);
+set ex;
+run;
 
 
 *firstobs문: 전체 자료 중 원하는 위치에서 끝까지 자료를 지정해서 새로운 데이터를 만드는 명령문(3~끝까지)
@@ -18,9 +24,28 @@ data ex_obs;
 set ex(obs=3);
 run;
 
+Q.data_app 데이터에서 id sex sal에 포함된 data_app_m1과 id year job birth이 포함된 data_app_m2생성
+data data_app_m1(keep=id sex sal) data_app_m2(keep=id year job birth);
+set data_app;
+run;
 
 
 
+
+
+option validvarname=any;
+data data_app;
+input id sex $ year job $ sal comma7. birth date10. ;
+format sal comma7. birth yymmdd10.;
+cards;
+01 남성 55 의사 100,000 23APR1963
+02 남성 40 공무원  70,000 03MAY1978
+03 남성 25 교사  30,000 12JUN1993
+04 여성 30 교사  50,000 30JUL1988
+05 여성 40  의사  80,000 07NOV1978
+06 여성 30 공무원 60,000 05APR1988
+;
+run;
 
 
 
