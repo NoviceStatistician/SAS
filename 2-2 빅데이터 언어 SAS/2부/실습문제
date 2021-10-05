@@ -14,20 +14,19 @@ cards;
 06 여성 30 공무원 60,000 05APR1988
 ;
 run;
-
+1.*성별에 따라 연봉 descending
 proc sort data=data_app out=data_s;
 by sex descending sal;
 run;
-
+2.*중복 성별 삭제
 proc sort data=data_s nodupkey;
 by sex;
 run;
 
 Q1.두 개 명령문 하나로 합칠 수 있나?
+X. 두 번에 나눠서 해야함.
 Q2.결측값 있으면 그 데이터셋 어떻게 지움?
-
-
-
+if문 사용해서 지워야함.
 
 
 
