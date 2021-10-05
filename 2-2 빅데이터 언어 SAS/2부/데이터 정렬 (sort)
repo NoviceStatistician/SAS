@@ -34,12 +34,22 @@ nodup까지만 적어도 됨. 나중에 nodupkey옵션도 나오는데 두 개�
 by idno는 idno순서로 오름차순 정렬해라임.*/
 
 *중복제거로 삭제한 애들만 따로 보관★
-proc sort data=ex out=ex_u DUPOUT=ex_DUP noduplicates;
+proc sort data=ex out=ex_u dupout=ex_DUP noduplicates;
 by idno;
 run;
 
 
+*nodupkey:key변수가 중복되지 않게 함.(key변수: by 다음에 오는 변수)
 
+*idno변수가 같으면 지워라.
+proc sort data=ex out=ex_key nodupkey;
+by idno;
+run;
+
+*각 idno와 name 변수가 같으면 지워라.
+proc sort data=ex out=ex_u noduplicates;
+by idno name;
+run;
 
 
 
