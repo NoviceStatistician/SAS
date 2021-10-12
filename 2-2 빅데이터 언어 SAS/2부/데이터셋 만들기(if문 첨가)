@@ -107,6 +107,9 @@ if age>=40 then output data_app_s2;
 if sal<70000 then output data_app1;
 if sal>=70000 then output data_app2;
 run;
+※만약, sel에 결측이 있으면, data_app1에 결측값이 들어감. 가장 작은 값=결측값 이라고 생각해서.
+So, 결측이 있던 없던 미만, 이하로 조건을 주면 하한값을 줘서 결측값을 거르는 조건을 둘 수 있도록 한다.
+->if 0<sal<70000 then output data_app1;
 
 
 
