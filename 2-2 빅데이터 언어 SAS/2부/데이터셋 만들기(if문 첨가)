@@ -114,6 +114,38 @@ So, 결측이 있던 없던 미만, 이하로 조건을 주면 하한값을 줘�
 
 
 
+-합치기(열 합치기)
+(keep,drop=열 분리
+key변수를 가지고 합친다. ex.id)
+A set: id name 
+B set: id age
+*merge
+data AB;
+merge A B;
+run;
+(한 데이터 셋에는 중복되는 변수가 있을 수 없음.
+그래서 중복되는 뒤의 변수를 지움.)
+(그냥 merge로 하면 순서대로 붙임. 만약 순서가 다르거나 row가 결측이면, 망가진 dataset이 됨.)
+
+*key변수에 기반한 merge
+data AB;
+merge A B;
+by id;
+run;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 *베이스 데이터셋
 option validvarname=any;
