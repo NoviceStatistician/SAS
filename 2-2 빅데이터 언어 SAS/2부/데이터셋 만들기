@@ -40,6 +40,36 @@ data AB;
 set A B;
 run;
 
+-If, A에 name 다 3글자 B name에 4글자면,
+A가 앞에 있으면 B도 다 세글자로 바뀜.
+방법1.포인트 지정 
+      lenght name $8.;
+방법2.가장 긴 문장이 있는 셋을 앞으로 당기면 됨.
+      set B A;
+      
+-If, 변수 명이 다른 두 데이터 셋 합치면?
+A set: id name age
+B set: id name 나이
+AB set: id name age 나이
+안 들어간 값에는 다 결측처리됨.
+방법. rename사용
+data AB;
+set B(rename=(나이=age));
+run;
+(B데이터의 나이 변수가 age 변수로 이름 바뀜.)
+(여러개 한 번에 바꾸려면 (rename=(나이=age name=나이)
+처럼 블랭크로 구분하면 한 번에 변경 가능.)
+
+-두 DataSet을 합치는 경우 구별 변수의 생성(in함수 사용)
+(Dataset 합칠때 변수명만 넣을 수 있음. Dataset명을 못 넣음.)
+data AB;
+set A (in=kim) B (in=pack);
+if kim then survey='조사자'kim';
+else if pack then survey='조사자pack';
+run;
+
+
+
 
 
 
