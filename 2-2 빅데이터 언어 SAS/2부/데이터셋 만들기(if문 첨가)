@@ -128,11 +128,15 @@ run;
 (그냥 merge로 하면 순서대로 붙임. 만약 순서가 다르거나 row가 결측이면, 망가진 dataset이 됨.)
 
 *key변수에 기반한 merge
+proc sort data=B;
+by id;
+run;
+
 data AB;
 merge A B;
 by id;
 run;
-
+(sort안하면 '정렬되어 있지 않다는 error가 뜸.)
 
 
 
