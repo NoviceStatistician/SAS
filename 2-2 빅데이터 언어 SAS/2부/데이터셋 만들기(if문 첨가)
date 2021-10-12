@@ -69,12 +69,44 @@ else if pack then survey='조사자pack';
 run;
 
 
+*if문
+-lowdataset에서 필요한 변수만 추출할 때
+1) 
+data ex_M;
+set data_app;
+if sex='남성' then output;
+run;
+(어퍼스트로피 사용할 때는 큰 따옴표 적어야 문자로 인식함.
+매크로 변수 사용할 때도 큰 따옴표 사용해야 함.
+작은 따옴표면 에러뜸.)
+2)
+data ex_H;
+set data_app;
+if sal>70000;
+run;
+(then output 생략가능:디폴트값)
+
+-남성set과 여성set을 분리하고 싶을 때
+data ex_M ex_W;
+set data_appEn;
+if sex='man' then output ex_M;
+if upcase(sex)='WOMAN'then output ex_W;
+run;
+(upcase는 대문자로 변환시켜라.)
 
 
+Q1. data_app 데이터에서 연령이 40세 미만이 포함된 data_app_s1과
+40세 이상이 포함된 data_app_s2, 연봉이 70000미만이 포함된 data_app1과,
+연봉이 70000이상이 포함된 data_app2를 생성
 
-
-
-
+A1.
+data data_app_s1 data_app_s2 data_app1 data_app2;
+set data_app;
+if age<40 then output data_app_s1;
+if age>=40 then output data_app_s2;
+if sal<70000 then output data_app1;
+if sal>=70000 then output data_app2;
+run;
 
 
 
@@ -83,7 +115,7 @@ run;
 *베이스 데이터셋
 option validvarname=any;
 data data_app;
-input id sex $ year job $ sal comma7. birth date10. ;
+input id sex $ age job $ sal comma7. birth date10. ;
 format sal comma7. birth yymmdd10.;
 cards;
 01 남성 55 의사 100,000 23APR1963
