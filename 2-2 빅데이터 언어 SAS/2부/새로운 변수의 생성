@@ -1,0 +1,10 @@
+기본 사칙연산 +더하기, -빼기, *곱하기,/나누기,**제곱
+내장함수
+ABS:절대값 SQRT:제곱근 DIM:원소의 개수
+EXP:지수함수 MOD:mode값 LOG:자연로그
+
+data new_ex;
+set ex;
+w_loss1=srtwght-endwght; #체중감소량
+w_loss2=sum(srtwght,-endwght); #srtwght와 -endwght를 합쳐라/"연산에 결측 들어가면=>결측"인데 sum함수는 결측을 0으로 취급함
+run;
