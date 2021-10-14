@@ -25,7 +25,8 @@ data ex_obs;
 set ex(obs=3);
 run;
 
-Q.data_app 데이터에서 id sex sal에 포함된 data_app_m1과 id year job birth이 포함된 data_app_m2생성
+Q1.data_app 데이터에서 id sex sal에 포함된 data_app_m1과 id year job birth이 포함된 data_app_m2생성
+A1.
 data data_app_m1(keep=id sex sal) data_app_m2(keep=id year job birth);
 set data_app;
 run;
@@ -95,11 +96,11 @@ run;
 (upcase는 대문자로 변환시켜라.)
 
 
-Q1. data_app 데이터에서 연령이 40세 미만이 포함된 data_app_s1과
+Q2. data_app 데이터에서 연령이 40세 미만이 포함된 data_app_s1과
 40세 이상이 포함된 data_app_s2, 연봉이 70000미만이 포함된 data_app1과,
 연봉이 70000이상이 포함된 data_app2를 생성
 
-A1.
+A2.
 data data_app_s1 data_app_s2 data_app1 data_app2;
 set data_app;
 if age<40 then output data_app_s1;
@@ -140,9 +141,26 @@ run;
 (by 쓸거면 그냥 먼저 sort하는게 편함.)
 (정렬하는거 때문에 merge잘 안씀. SQL문 자주 씀. 자격증에 잘 나와서 공부하는거.)
 
+Q3.m1과 m2를 id변수를 이용하여 열결합 하여 id, job, sal만을 포함한 새로운 데이터 생성
 
-
-
+A3.
+proc sort data=data_app_m1; #원본 dataset그대로 정렬하면out 안 써도 됨.
+by id;
+run;
+proc sort data=data_app_m2;
+by id;
+run;
+data data_sum;
+merge data_app_m1 data_app_m2;
+by id;
+run;
+data data_sum(keep=id job sal);
+set data_sum;
+^^^merge, keep 2개 합치는 것도 됨
+data data_sum1(keep=id job sal); #keep 괄호 밖으로 빼서 밑에 넣어도 됨.
+merge data_app_m1 data_app_m2;
+by id;
+run;
 
 
 
@@ -164,4 +182,7 @@ cards;
 05 여성 40  의사  80,000 07NOV1978
 06 여성 30 공무원 60,000 05APR1988
 ;
+run;
+data data_app_m1(keep=id sex sal) data_app_m2(keep=id year job birth);
+set data_app;
 run;
