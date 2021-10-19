@@ -71,10 +71,11 @@ run;
 
 *base dataset
 data ex;
-input idno name team srtwght endwght;
+cards;
+input idno name $ team $ srtwght endwght @@;
 1001 A red 90 80
 1002 B yellow 80 65
-1003 C     80 70
+1003 C red 80 70
 1004 D yellow 65 50
 1005 E RED 60 .
 ;
@@ -82,7 +83,7 @@ run;
 
 option validvarname=any;
 data data_app;
-input id sex $ year job $ sal comma7. birth date10. ;
+input id sex $ year job $ sal comma7. birth date10. @@;
 format sal comma7. birth yymmdd10.;
 cards;
 01 남성 55 의사 100,000 23APR1963
