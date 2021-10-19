@@ -13,7 +13,10 @@ run;
 
 Q1. data_app를 이용하여 월 급여 변수 생성해서 새로운 데이터 만들기
 A1.
-
+data app;
+set data_app;
+m_sal=sal/12;
+run;
 
 
 *if문에서 사용되는 조건식(약어)
@@ -77,7 +80,7 @@ run;
 시간이 오래 안걸림.
 (※항상 하안값, 상한값 지정해주기.)
 
-<추천하는 elseif문>
+<추천하는 elseif문>★
 data ex_if;
 set new_ex;
 if 0<=endwght<70 then w_c=1;
@@ -86,7 +89,7 @@ else if endwght>=80 then w_c=3;
 else w_c=99999;
 run;
 #elseif에도 하안값 주기.(혹시나 조건이 애매하거나 하나 빠질 수 있기 때문에./ㅁ>59 했는데 59.5값 있으면 그 값은 결측이 됨.)
-마지막 else문에는 코드 오류 체크용으로 나머지 조건 넣기.
+마지막 else문은 코드 오류 체크용으로 놔두기.
 99999나오면 조건에 오류가 있다.(포괄성 결여)
 >>99999있는지 확인하는 방법
   proc freq data=ex_if;
@@ -94,8 +97,56 @@ run;
   run;
   #빈도 구해주는 코드.
   
-  99999 찾는 법. 
+ >99999 찾는 법. ★
   where w_c=99999를 왼쪽 위의 검색창에 입력.
+
+#조건문 연산순서.
+사칙연산과 같음. 괄호부터 먼저 연산함.
+
+-여러 조건 사용하기
+data ex_m;
+set ex;
+if (name='홍길동' or team='yellow') and strtwght<=80;
+run;
+
+data ex_m2;
+if upcase(team)="RED';
+run;
+#upcase 관측값이 영어일 때 대문자로 바꿔주는거.
+
+data ex_m3;
+set ex;
+if name <:'이' then group='ㄱ ㅇ';
+else group='ㅈ ㅎ'
+run;
+#시험x
+
+
+
+
+Q1. data_app에서 월급여가 5000이상인 경우 '상', 5000미만인 경우 '하'의 값을 가지는 '소득'이라는 변수를 생성하여 새로운 데이터 만들기
+
+A1.
+data app1;
+set app;
+if 0<=m_sal<5000 then 소득='하';
+else if 5000<=m_sal then 소득='상';
+else 소득=9999;
+run;
+
+Q2. data_app에서 다음의 기준에 따른 소득 변수를 생성한 데이터 만들기
+40세 미만: 5000이상=상 5000미만=하
+40세 이상: 6000이상=상 6000미만=하
+
+A2.
+data app2;
+set app;
+if (0<=year<40 and 0<=m_sal<5000) or (40<=year and 0<=m_sal<6000) then 소득='하';
+else if (0<=year<40 and 5000<=m_sal) or (40<=year and 6000<=m_sal) then 소득='상';
+else 소득=9999;
+run;
+
+
 
 
 *base dataset
@@ -122,4 +173,9 @@ cards;
 05 여성 40  의사  80,000 07NOV1978
 06 여성 30 공무원 60,000 05APR1988
 ;
+run;
+
+data app;
+set data_app;
+m_sal=sal/12;
 run;
