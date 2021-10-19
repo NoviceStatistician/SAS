@@ -42,13 +42,7 @@ if endwght<70 then w_c=1;
 if endwght<80 then w_c=2;
 if endwght>=80 then w_c=3;
 run;
-
-data ex_if2;
-set new_ex;
-if endwght<70 then w_c=1;
-else if endwght<80 then w_c=2;
-else w_c=3;
-run;
+#if문때문에 조건이 다시 처음부터 들어감.
 
 data ex_if3;
 set new_ex;
@@ -56,6 +50,20 @@ if endwght<70 then w_c=1;
 if 70<=endwght<80 then w_c=2;
 if endwght>=80 then w_c=3;
 run;
+#결측처리 하안값이 없음.
+첫 if문에 0<조건 추가하면 제대로 된 if문 걸림.
+
+->if if 문 안쓰는 이유는?
+이미 처리한 것도 if문 때문에 다시 처리하게 됨.
+시간이 오래 걸림.
+
+data ex_if2;
+set new_ex;
+if endwght<70 then w_c=1;
+else if endwght<80 then w_c=2;
+else w_c=3;
+run;
+#첫 if문의 조건이 없음.
 
 data ex_if4;
 set new_ex;
@@ -63,10 +71,31 @@ if 0<=endwght<70 then w_c=1;
 else if endwght<80 then w_c=2;
 else w_c=3;
 run;
+#제대로 된 if문.
 
+->elseif 문은 if에 처리한 문장은 else if에서는 처리하지 않음.
+시간이 오래 안걸림.
+(※항상 하안값, 상한값 지정해주기.)
 
-
-
+<추천하는 elseif문>
+data ex_if;
+set new_ex;
+if 0<=endwght<70 then w_c=1;
+else if 70<=endwght<80 then w_c=2;
+else if endwght>=80 then w_c=3;
+else w_c=99999;
+run;
+#elseif에도 하안값 주기.(혹시나 조건이 애매하거나 하나 빠질 수 있기 때문에./ㅁ>59 했는데 59.5값 있으면 그 값은 결측이 됨.)
+마지막 else문에는 코드 오류 체크용으로 나머지 조건 넣기.
+99999나오면 조건에 오류가 있다.(포괄성 결여)
+>>99999있는지 확인하는 방법
+  proc freq data=ex_if;
+  table w_c;
+  run;
+  #빈도 구해주는 코드.
+  
+  99999 찾는 법. 
+  where w_c=99999를 왼쪽 위의 검색창에 입력.
 
 
 *base dataset
