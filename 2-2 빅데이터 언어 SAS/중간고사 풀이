@@ -1,0 +1,38 @@
+options validvarname=any;
+libname stat "C:\Users\OWNER\Downloads\stat";
+
+/*1번*/
+문자는 문자형으로 입력 안하면 감점
+
+/*2번*/
+upcase 안쓰면 틀림(부분점수만)
+m or M 은 상관 x
+
+/*3번*/
+하나의 data step으로 가족수 결측인 각 지역 분류
+  and로 잘 묶었는가
+  keep 아이디(안하면 감점)
+csv파일 내보내기는 각각 하면 됨
+
+/*4번*/
+2)
+  (rename=(교육정도=교육수준))해야 함
+  1 step으로 잘 했는지
+3)
+  sort+nodupkey문제
+  
+/*5번*/
+sort를 한 후에 merge를 했는가
+각 data set을 sort했는가
+
+/*6번*/
+범주화 문제
+if 0<=연령<20을 했는가(안했으면 틀린거임)
+연령대 변수가 그대로 나왔는지.(length변수 쓰던가, 40세 이상을 가장 먼저 올리던.)
+교육수준=. or 연령=0 then delete; 조건문 있어야함.
+
+
+
+>>>실전에서 사용할 수 있는 data clening과정을 할 수 있는가. data handing 중급과정
+다음에는 문자변수
+매크로+sql문 배우면 고급과정
