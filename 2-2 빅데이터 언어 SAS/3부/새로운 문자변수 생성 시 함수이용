@@ -1,0 +1,92 @@
+★문자형 변수에만 사용이 가능한 함수들임.
+
+scan: 특정 문자열만 가져오는 방법
+scan(변수명, 숫자, '구분자')
+
+
+substr: 특정위치에 있는 관찰값만을 가져오는 명령문★
+
+substr(변수, 위치, 길이);
+위치로부터 길이만큼 뽑아와
+date=20211109
+년 substr(date,1,4)
+월 substr(date,5,2)
+일 substr(date,7,2)
+
+
+left: 왼쪽 공백 없애줌
+ex)
+red
+ red
+
+
+||:앞 변수와 뒤의 변수 합쳐줌
+
+
+trim: 오른쪽 공백 없애줌
+
+
+-실습문제
+1) 성과 이름 변수 생성하기
+
+2) 다음과 같은 변수 생성하기: Kim, Suji -> Kim, S.
+
+A)
+data a;
+input id $ name $ 3-16;
+cards;
+1 Hwang. Jinseub
+2 Ryu. Soorack
+3 Kim. SuJi
+;
+run;
+data b;
+set a;
+ first_n=scan(name, 1,'.');
+last_n1=scan(name,2,'.');
+last_n2=left(scan(name,2,'.'));
+name_a=first_m||'.'||substr(last_n1,2,1)||;
+name_b=trim(first_m)||'.'||substr(last_n1,2,1)||;
+name_c=trim(first_m)||'.'||substr(last_n2,2,1)||;/*이게 베스트*/
+run;
+
+
+mdy(substr(월, 일, 년)) /*두 개 같이써서 날짜형 변수로 바꿀 수 있음.*/
+
+
+문자->숫자(input문), 숫자->문자(put문)
+
+
+'ARRAY'문의 활용 ★
+: 2개 이상의 변수에 동일한 처리를 할 경우에 변수의 수 만큼 if문을 사용할
+수도 있지만 보다 손쉬운 방법으로 DO문과 ARRAY문을 이용하는 방법이다
+
+data A;
+set B;
+array list{10} x1-x10; *sas에서 어려운 친구 중 1개 x1-x10이면 x1~x10까지 1개씩 숫자 증가해서 자동으로 10개 만들어줌
+do count=1 to 10; *sas 루프 문 중 1개(by=1이 기본값) 1~10까지 1씩 증가, 뒤에 나오는 if end문을 한 번씩 반복
+if list{count}=. then list{count}=10;
+end;
+run;
+>array do and 결합해서 사용하면 간단하게 코딩 할 수 있음. 시간 상의 단축은 없음.
+
+
+
+실습문제) data_app에서 do, array문을 이용하여 연봉이 결측인 경우 0으로 대체하는 새로운 데이터 생성
+
+
+
+
+
+
+sas baise 5일 수업 추천
+
+
+
+
+
+
+
+
+
+
