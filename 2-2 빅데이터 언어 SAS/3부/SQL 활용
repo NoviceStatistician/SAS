@@ -188,5 +188,78 @@ quit;
 
 
 
+-sql 새 데이터셋 만들기
 
+ -data step
+data ex_yellow;
+set ex;
+if team='yellow';
+keep strtwght endwght;
+run;
+
+ -sql
+proc sql;
+create table ex_yellow as # ex_yellow데이터 셋 만드는데 as뒤의 것 대로 만든다.
+select strtwght, endwght as e #기존 데이터셋 이름 쉽게 바꿀 수 있음. endwght를 e로 새 데이터셋 만드는 중간에도 가능.(*1)
+from ex
+where team='yellow';
+quit;
+
+*1. select strtwght-endwgth as diffwght
+
+
+sql변수 선택 및 format 지정
+
+data ex4;
+input idno name $ team $ strtwght cost comma6. strtdata date10.  strttime time5.;
+format cost comma6. strtdata date10.  strttime time5.;
+cards;
+1001 홍길동 red 90 50,000 13APR2015 9:00
+1002 이순신 yellow 80 40,000 12APR2015 10:00
+1003 세종대왕 red 80 45,000 03APR2014 15:00
+1004 유관순 yellow 65 40,000 20APR2013 14:00
+1005 신사임당 RED 60 25,000 07APR2014 10:00
+;
+run;
+
+proc sql;
+select team, strttime+3600 as end time format=time5.
+from ex4
+where calculated endtime<'12:00't;
+quit;
+'12:00'은 문자로 인식함. '12:00't를 붙여야 시간으로 인식함.
+where은 (새 변수 만들기 전)기존 data set에 있는 것마 조건 걸 수 있음.
+sql에서 calculated옵션 사용하면 만든 변수도 조건에 걸 수 있음.★
+
+
+
+
+
+Q1.sql문을 이용항 data_app에서 생년월일에 연령(일수)를 더한 날짜변수 생성
+
+A1.
+proc sql;
+select *, birth+year*365 as y_b format date10.
+from data_app;
+quit;
+
+Q2.sql문을 이용항 data_app에서 Q1에서 새롭게 생성된 날짜변수가 1분기에 해당하는 대상자만 포함한 데이터 생성하기
+
+Q2.
+proc sql;
+create table data_app_Q2 as
+select *
+from data_app
+where calculated y_b<'01APR2018'd;
+quit;
+
+
+Q1+Q2
+
+proc sql;
+create table data_app_Q2 as
+select *, birth+year*365 as y_b format date10.
+from data_app
+where calxulater y_b<'014APR2018'd;
+quit;
 
