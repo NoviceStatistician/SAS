@@ -13,12 +13,6 @@ quit; #data step모드로 돌아감. SQL모드 나가기.
 select 변수1, 변수2, 변수3 from dataset_name; #keep(변수1 변수2 변수3);
 
 
-proc sql;
-select name, strtwght
-from ex
-where team='yellow'; #한 문장으로 마무리함. where은 조건문
-quit;
-
 
 data data_app;
 input id sex $ year job $ sal comma7. birth date10. ;
@@ -122,6 +116,74 @@ quit;
 
 
 
+
+proc sql;
+select name, strtwght
+from ex
+where team='yellow'; #한 문장으로 마무리함. where은 조건문
+quit;
+
+
+proc sql;
+select name
+from ex
+where name like; '이%'; #'이'로 시작하는 사람들의 이름을 출력해
+quit;
+
+
+proc sql;
+select name
+from ex
+where name like '_동'; #'동'으로 끝나는 사람을 출력(앞 포인트에 맞게끔 설정. __동 이면 '동'앞 2자는 뭐든 상관x. 넘으면x)
+quit;
+
+
+proc sql;
+select name, strtwght
+from ex
+where strtwght in (80,90); #or을 간편하게 하기 위한 함수.
+quit;
+
+
+proc sql;
+select name, strtwght
+from ex
+where strtwght between 60 and 80; #60< =변수 <=80
+quit;
+
+
+proc sql;
+select name, strtwght
+from ex
+where strtwght is null; # null만 출력함. 컴이 알아서 문자나 숫자나 결측이면 다 찾아냄 
+quit;
+
+
+
+Q1. data_app에서 sql문의 like를 이용하여 남성의 연령과 직업 출력하기
+
+A1.
+proc sql;
+select sex, year, job
+from data_app;
+quit;
+
+A1-2
+proc sql;
+select year, job
+from data_app
+where sex like '남%';
+quit;
+
+
+Q2. data_app에서 sql문의 where을 이용하여 연봉이 결측이 아닌 대상자의 전체 변수 출력하기
+
+A2.
+proc sql;
+select *  # 전체 다 선택
+from data_app
+where sal is not null;  # null아닌 것만 출력
+quit;
 
 
 
