@@ -276,7 +276,7 @@ cards;
 run;
 
 data b;
-input x y $ @@;
+input x z $ @@;
 cards;
 1 one
 2 two 
@@ -377,7 +377,7 @@ full join b on
 a.x=b.x; #data step은 rename 해야하지만, sql은 필요없음. ex) a.x=b.z
 quit;
 >싹 다 붙임(없는 값은 결측처리함.)
-*>x에 4를 붙이고 싶으면, select coalesce(a.x, b.x) ax x, y, z =>a.x를 찍는데 없으면 b.x를 찍어라.
+*>x에 4를 붙이고 싶으면, select coalesce(a.x, b.x) a x, y, z =>a.x를 찍는데 없으면 b.x를 찍어라.
      (=merge 랑 비슷)
 
 Q.full join의 coalesce사용한 것과 같게 merge로 만들어보기.
