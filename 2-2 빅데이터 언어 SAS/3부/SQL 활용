@@ -263,3 +263,69 @@ from data_app
 where calxulater y_b<'014APR2018'd;
 quit;
 
+
+*두 개의 dataset 행 결합
+data a;
+input x y $ @@;
+cards;
+1 one
+2 two
+2 two
+3 three
+;
+run;
+
+data b;
+input x y $ @@;
+cards;
+1 one
+2 two 
+3 three
+;
+run;
+
+
+
+-union
+proc sql;
+select * from a
+union
+select * from b;
+quit;
+
+proc sql;
+select * from a
+union all
+select * from b;
+quit;
+
+-except
+proc sql;
+select * from a
+except
+select * from b;
+quit;
+
+-intersect
+proc sql;
+select * from a
+intersect
+select * from b;
+quit;
+
+-outer
+proc sql;
+select * from a
+outer union
+select * from b;
+quit;
+
+
+
+
+
+
+
+
+
+
