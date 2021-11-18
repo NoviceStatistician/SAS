@@ -264,7 +264,7 @@ where calxulater y_b<'014APR2018'd;
 quit;
 
 
-*두 개의 dataset 행 결합
+*두 개의 dataset 행 결합(잘 사용은 안함. 시험에는 나옴)
 data a;
 input x y $ @@;
 cards;
@@ -285,44 +285,66 @@ cards;
 run;
 
 
-
--union
+-union  #합집합
+/*앞 변수 기준으로 그냥 붙어버림*/
 proc sql;
+create table m1 as
 select * from a
 union
 select * from b;
 quit;
+>중볻된거 제거(=proc no dup)
 
 proc sql;
+create table m2 as
 select * from a
 union all
 select * from b;
 quit;
+>중복된것도 포함
 
--except
+/*data step에서는,
+set a b*/
+
+
+-except  #여집합
 proc sql;
+create table m3 as
 select * from a
 except
 select * from b;
 quit;
+>a합집합b에서 여집합 b
 
--intersect
+-intersect  #교집합
 proc sql;
+create table m4 as
 select * from a
 intersect
 select * from b;
 quit;
 
--outer
+-outer  #그냥 a, b 다 보여줌
 proc sql;
+create table m5 as
 select * from a
 outer union
 select * from b;
 quit;
 
 
+*두 개의 dataset 열 결합(잘 사용은 안함. 시험에는 나옴)
+
+-join
 
 
+-legt join
+
+
+-right join
+
+
+-full join
 
 
 
