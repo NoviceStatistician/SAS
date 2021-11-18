@@ -10,9 +10,38 @@ cards;
 06 여성 30 공무원 60,000 05APR1988
 
 
+data data_app;
+input id sex $ year job $ sal comma7. birth date10. ;
+format sal comma7. birth yymmdd10.;
+cards;
 01 남성 55 의사  100,000 23APR1963
 02      40 공무원 70,000  3MAY1978
 03 남성 25 교사  .     12JUN1993 
 04 여성 30 교 사 50,000  30JUL1988
 05 여성 40  의사  80,000  7NOV1978
 06 여성 30 공무원 60,000  5APR1988
+
+
+data ex;
+cards;
+input idno name $ team $ srtwght endwght @@;
+1001 A red 90 80
+1002 B yellow 80 65
+1003 C red 80 70
+1004 D yellow 65 50
+1005 E RED 60 .
+;
+run;
+
+
+data ex4;
+input idno name $ team $ strtwght cost comma6. strtdata date10.  strttime time5.;
+format cost comma6. strtdata date10.  strttime time5.;
+cards;
+1001 홍길동 red 90 50,000 13APR2015 9:00
+1002 이순신 yellow 80 40,000 12APR2015 10:00
+1003 세종대왕 red 80 45,000 03APR2014 15:00
+1004 유관순 yellow 65 40,000 20APR2013 14:00
+1005 신사임당 RED 60 25,000 07APR2014 10:00
+;
+run;
