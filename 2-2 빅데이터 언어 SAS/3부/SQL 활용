@@ -314,7 +314,7 @@ select * from a
 except
 select * from b;
 quit;
->a합집합b에서 여집합 b
+>a합집합b에서 여집합 b(data step에서는 merge써서 해야함.)
 
 -intersect  #교집합
 proc sql;
@@ -323,28 +323,86 @@ select * from a
 intersect
 select * from b;
 quit;
+>중복 제거
 
--outer  #그냥 a, b 다 보여줌
+-outer  #그냥 a, b 다 붙여줌(같은 변수 명이라도 그냥 붙임.)
 proc sql;
 create table m5 as
 select * from a
-outer union
+outer union /*corr*/
 select * from b;
+quit;
+>출력 값이랑 라이브러리 데이터 셋에서 나오는거 다름.
+라이브러리 데이터셋에선 같은 변수 명 쓸 수 없어서 그럼.
+*>변수 명이 같으면 밑에 붙이고 아니면 결측 만들어서 붙여라는 corr 옵션을 넣으면 됨. set문과 가장 비슷
+
+*두 개의 dataset 열 결합(잘 사용은 안함. 시험에는 나옴)★
+x=key 변수
+data a;
+input x y $ @@;
+cards;
+1 one
+2 two
+2 two
+3 three
+;
+run;
+data b;
+input x z $ @@;
+cards;
+1 one
+2 two 
+4 four
+;
+run;
+
+
+-join
+proc sql;
+create table t1 as
+select *
+from a
+join b on
+a.x=b.x;  #a의 x변수가 b의 x변수가 같은 것만 붙여라(like by key변수)/문장 속 .은 해당 dataset의 변수/dataset의 .은 위치 
+quit;
+>겹치는거 제거하고 붙임
+(merge하고, 두 값의 결측 있는거 다 지우면 됨.)
+
+-full join
+proc sql;
+create table t2 as
+select *
+from a
+full join b on
+a.x=b.x; #data step은 rename 해야하지만, sql은 필요없음. ex) a.x=b.z
+quit;
+>싹 다 붙임(없는 값은 결측처리함.)
+*>x에 4를 붙이고 싶으면, select coalesce(a.x, b.x) ax x, y, z =>a.x를 찍는데 없으면 b.x를 찍어라.
+     (=merge 랑 비슷)
+
+Q.full join의 coalesce사용한 것과 같게 merge로 만들어보기.
+A.
+
+
+-left join
+proc sql;
+create table t3 as
+select *
+from a
+left join b on
+a.x=b.x;
 quit;
 
 
-*두 개의 dataset 열 결합(잘 사용은 안함. 시험에는 나옴)
-
--join
-
-
--legt join
-
-
 -right join
+proc sql;
+create table t4 as
+select *
+from a
+right join b on
+a.x=b.x;
+quit;
 
-
--full join
 
 
 
