@@ -357,7 +357,7 @@ cards;
 run;
 
 
--join
+-join ☆
 proc sql;
 create table t1 as
 select *
@@ -381,10 +381,33 @@ quit;
      (=merge 랑 비슷)
 
 Q.full join의 coalesce사용한 것과 같게 merge로 만들어보기.
+
+proc sql;
+create table t2_2 as
+select coalesce(a.x, b.x) as x,y,z
+from a
+full join b on
+a.x=b.x;
+quit;
+
+
 A.
+proc sort data=a;
+by x;
+run;
+proc sort data=b;
+by x;
+run;
+data t2_1;
+merge a b;
+by x;
+run;
 
 
--left join
+
+-left join ☆
+left에 해당하는 a set은 그대로 가져오고 a set에 맞지 않는 b set data는 날림.
+같은 값이 a set에 연달아 있으면 b set도 덩달아 뻥튀기 됨. 
 proc sql;
 create table t3 as
 select *
@@ -394,7 +417,8 @@ a.x=b.x;
 quit;
 
 
--right join
+-right join (잘 안씀)
+b set기준으로 a set붙임.(left join 쓰면서 위치만 바꾸면 됨.)
 proc sql;
 create table t4 as
 select *
@@ -405,6 +429,14 @@ quit;
 
 
 
+Q1. 두 data를 기반으로 성별에 따른 평균연령 출력
+
+A1. 
+
+
+Q2. 두 data를 기반으로 연령정보가 있는 대상자에 대한 성별 빈도 출력
+
+A2.
 
 
 
