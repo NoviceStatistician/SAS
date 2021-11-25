@@ -377,7 +377,7 @@ full join b on
 a.x=b.x; #data step은 rename 해야하지만, sql은 필요없음. ex) a.x=b.z
 quit;
 >싹 다 붙임(없는 값은 결측처리함.)
-*>x에 4를 붙이고 싶으면, select coalesce(a.x, b.x) a x, y, z =>a.x를 찍는데 없으면 b.x를 찍어라.
+*>x에 4를 붙이고 싶으면, select coalesce(a.x, b.x) as x, y, z =>a.x를 찍는데 없으면 b.x를 찍어라.
      (=merge 랑 비슷)
 
 Q.full join의 coalesce사용한 것과 같게 merge로 만들어보기.
@@ -430,8 +430,51 @@ quit;
 
 
 Q1. 두 data를 기반으로 성별에 따른 평균연령 출력
+option validvarname=any;
+data data_one;
+input 아이디 성별 $ @@;
+cards;
+1 M
+2 F
+3 F
+4 M
+5 F
+;
+run;
+data data_two;
+input id 연령 @@;
+cards;
+1 35
+2 32
+4 41
+5 23
+6 34
+;
+run;
 
 A1. 
+
+proc sql;
+create table q1 as
+select coalesce(data_one.아이디, data_two.id) as 아이디, 성별, 연령
+from data_one
+full join data_two on
+data_one.아이디=data_two.id;  #두 데이터셋 합치기
+
+
+
+
+
+proc sql;
+create table q1 as
+select 성별, mean(연령) as mean_a
+from data_one
+left join data_two on
+data_one.아이디=data_two.id
+group by 성별
+order by mean_a
+;
+
 
 
 Q2. 두 data를 기반으로 연령정보가 있는 대상자에 대한 성별 빈도 출력
