@@ -480,7 +480,7 @@ order by mean_a
 Q2. 두 data를 기반으로 연령정보가 있는 대상자에 대한 성별 빈도 출력
 
 A2.
-
+join
 
 
 
