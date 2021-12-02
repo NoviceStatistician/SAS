@@ -1,0 +1,95 @@
+option validvarname=any;
+libname kyh 'C:\Users\OWNER\Desktop';
+data kyh.homework1;
+infile 'C:\Users\OWNER\Downloads\homework1.txt';
+input
+@1 이름 $ 6.
+@7 지역 $ 4.
+@12 직업 $ 13.
+@26 몸무게 2.
+@29 키 3.
+@33 성별 $ 1.
+@35 구 $ 4.
+@40 연봉 comma6.
+;
+run;
+proc sort data=kyh.homework1 out=homework1_2 nodup;
+by 이름;
+run;
+data homework1_3;
+set homework1_2;
+if 지역=" " or 연봉=. then delete;
+run;
+proc sort data=homework1_3;
+by 지역 연봉;
+run;
+proc sort data=homework1_3  nodupkey;
+by 지역;
+run;
+data homework1_4;
+set homework1_2;
+BMI=몸무게/(키*0.01)**2;
+length class $ 57;
+if 0<BMI<21 then class="low";
+else if 21<BMI<30 then class="standard";
+else if 30<BMI then class="high";
+else class="결측";
+run;
+data homework1_5_low homework1_5_high;
+set homework1_4;
+if class="low" then output homework1_5_low;
+else if class="high" then output homework1_5_high;
+run;
+proc import
+datafile="C:\Users\OWNER\Downloads\homework1.csv"
+out=kyh.homework1_csv dbms=csv replace;
+getnames=yes;
+run;
+proc sort data=kyh.homework1_csv;
+by name;
+run;
+data homework_7(keep= 이름 연봉 전공);
+length 이름 $6;
+merge homework1_4 kyh.homework1_csv(rename=(name=이름));
+by 이름;
+run;
+data homework_7_1;
+length 이름 $6;
+merge homework1_4 kyh.homework1_csv(rename=(name=이름));
+by 이름;
+run;
+data homework_8;
+set homework_7_1;
+주소=cats(지역, 구);
+run;
+data homework9;
+set homework_7_1(rename=(전공=출신학과));
+run;
+proc import
+datafile= 'C:\Users\OWNER\Downloads\homework2_1.csv'
+out=homework_10 dbms=csv replace;
+getnames=yes;
+run;
+data homework_11(drop=salary count);
+set homework_10;
+sal=input(compress(salary,','), best.);
+array list{3} sal height credit;
+do count=1 to 3;
+if list{count}=. then list{count}=0;
+end;
+run;
+proc import
+datafile= 'C:\Users\OWNER\Downloads\homework2_2.csv'
+out=homework_12 dbms=csv replace;
+getnames=yes;
+run;
+proc sql;
+create table homework_13 as
+select *
+from homework_11
+left join homework_12 on
+homework_11.name=homework_12.이름 and
+homework_11.area=homework_12.지역;
+alter table homework_13
+drop 이름, 지역;
+quit;
