@@ -489,4 +489,11 @@ group by 성별
 order by count_s desc;
 quit;
 
+proc sql;
+select a.성별, count(*) as count_s
+from data_one as a 
+join data_two as b on
+a.아이디=b.id
+group by a.성별
+quit;
 
