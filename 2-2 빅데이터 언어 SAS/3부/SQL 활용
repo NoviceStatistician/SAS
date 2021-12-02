@@ -497,3 +497,58 @@ a.아이디=b.id
 group by a.성별
 quit;
 
+
+
+-case when (유사 if문)
+뒤에있는 데이터셋에 없는 것만 뽑아내는거(조사 잘못된거 뽑아서 재조사 할 때 자주 씀.)
+proc sql;
+create table no_join as
+select a.*, case when a.x=b.x then 1 else 0 end as chk #앞거랑 일치하면 1 불일치면 0
+from a
+left join b on
+a.x=b.x
+where calculated chk=0; #불일치만 뽑아야 하니까 0만 뽑으면 됨. 그냥 where만 쓰면 에러, 기존에 없는 변수 chk. 중간에 만든거 같이 쓸 수 있게 해주는 함수 calculated
+quit;
+
+
+
+Q1. data_one 대상자에서 연령정보가 없는 대상자의 id를 포함하는 데이터 생성
+
+A1.
+
+
+
+Q2. data_two 대상자에서 성별정보가 없는 대상자의 id를 포함하는 데이터 생성
+
+A2.
+
+
+
+
+
+
+
+
+
+
+
+
+-base dataset
+data a;
+input x y $ @@;
+cards;
+1 one
+2 two
+2 two
+3 three
+;
+run;
+data b;
+input x z $ @@;
+cards;
+1 one
+2 two 
+4 four
+;
+run;
+
