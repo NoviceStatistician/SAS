@@ -104,7 +104,7 @@ out=homework_12 dbms=csv replace;
 getnames=yes;
 run;
 
-proc sql; ★()
+proc sql; ★(기말)
 create table homework_13 as
 select *
 from homework_11
