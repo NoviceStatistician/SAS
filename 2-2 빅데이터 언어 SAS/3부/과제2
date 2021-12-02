@@ -75,7 +75,7 @@ run;
 /*
 data homework_8;
 set homework_7_1;
-주소=trim(지역)||trim(구);
+주소=trim(지역)||trim(구); /*혹시 모를 공백이 있을 수 있으니 trim 쓰기*/
 run;
 */
 
@@ -98,6 +98,17 @@ if list{count}=. then list{count}=0;
 end;
 run;
 
+/*
+data homework_11(drop=i salary rename=(salary2=salary));
+set homework_10;
+salary2=input(salary, comma6.);
+array missing{3} height salary2 credit;
+do i=1 to 3;
+if missing{i}=. then missing{i}=0;
+end;
+run;
+*/
+
 proc import
 datafile= 'C:\Users\OWNER\Downloads\homework2_2.csv'
 out=homework_12 dbms=csv replace;
@@ -114,3 +125,13 @@ homework_11.area=homework_12.지역;
 alter table homework_13
 drop 이름, 지역;
 quit;
+
+/*
+proc sql; ★(기말)
+create table homework_13 as  #순서 상관 없는건가..?
+select a.*, b.weight, b.birth
+from homework_11 as a 
+left join homework_12 as b on \
+a.name=b.이름 and a.area=b.지역
+quit;
+*/
