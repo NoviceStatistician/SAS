@@ -24,3 +24,19 @@ var x;
 run;
 
 
+%macro
+-자주 사용하는 매크로 함수
+
+%macro 매크로 이름(인자들); #macro 시작
+매크로 문장들;
+%mend 매크로 이름;  #macro 끝
+
+%macro means(factor);
+proc means data=one &factor;
+var s;
+run;
+%mend means;
+
+%means (n mean std);
+%means(n);
+#통계량 뿐만 아니라 data set 이름, 변수도 메크로로 잡을 수 있음.
