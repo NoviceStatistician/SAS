@@ -1,0 +1,33 @@
+options validvarname=any;
+
+data ex_m1;
+input idno name team @@;
+cards;
+1001 홍길동 red
+1002 이순신 yellow
+1003 세종대왕 red
+1004 유관순 yellow
+1005 신사임당 RED
+;
+run;
+
+data ex_m2;
+input idno strtwght endwght @@;
+cards;
+1001 90 80
+1002 80 65
+1003 80 70
+1004 65 50
+1005 60 55
+;
+run;
+
+proc sql;
+create table sub_query as
+select idno, strtwght, endwght
+from ex_m2
+where idno in (select idno from ex_m1 where name in('홍길동', '이순신'));
+quit;
+#이름이 홍길동이거나 이순신인 사람만 남김
+한 쿼리 안에 또다른 sql쿼리가 들어간 것이 subquery
+괄호 안은 1001, 1002만 남음
