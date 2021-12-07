@@ -31,3 +31,38 @@ quit;
 #이름이 홍길동이거나 이순신인 사람만 남김
 한 쿼리 안에 또다른 sql쿼리가 들어간 것이 subquery
 괄호 안은 1001, 1002만 남음
+속도가 훨씬 줄어듬
+
+
+
+
+Q1. data_one 대상자에서 연령정보가 없는 대상자를 제외한 데이터 생성 (subquery활용)
+
+data data_one;
+input 아이디 성별 $ @@;
+cards;
+1 M
+2 F
+3 F
+4 M
+5 F
+;
+run;
+data data_two;
+input id 연령 @@;
+cards;
+1 35
+2 32
+4 41
+5 23
+6 34
+;
+run;
+
+A1.
+proc sql;
+select *
+from data_one 
+where 아이디 in (select id from data_two)
+;
+quit;
