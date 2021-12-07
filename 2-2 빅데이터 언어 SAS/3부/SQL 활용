@@ -552,3 +552,33 @@ cards;
 ;
 run;
 
+
+-3개 이상의 dataset 열결합
+data a;
+input x y @@;
+cards;
+1 one
+2 two
+2 two
+3 three
+;
+run;
+data b;
+input x z;
+cards;
+1 one 2 two 4 four
+;
+run;
+data c;
+input x w;
+cards;
+2 two 3 three 5 five
+;
+run;
+proc sql;
+create table more_join as
+select coalesce(a.x, b.x, c.x) as x, a.y, b.z, c.z
+from a 
+left join b on a.x=b.x
+left join c on a.x=c.x;
+quit;
