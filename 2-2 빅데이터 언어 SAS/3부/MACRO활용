@@ -1,0 +1,26 @@
+반복된 수행을 편하게 해 주는 구문
+
+
+%Let문 
+(단독보다는 global macro에서 자주 사용됨)
+-매크로 변수 만들거야
+반복되는걸 한 문장으로 해줌.
+
+
+%let procopt=n mean std; #procopt라는 이름의 평균과 분산을 구하는 매크로를 만듦
+
+data one;
+input x @@;
+cards;
+2 4 3 5 7 5 6 3 4 5 6 8 7 9
+run;
+
+proc means data=one n mean std;
+var x;
+run;
+
+proc means data=one &procopt; #procopt매크로를 실행한다.(반복)
+var x;
+run;
+
+
