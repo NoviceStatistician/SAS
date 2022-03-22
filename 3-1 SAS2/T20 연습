@@ -1,6 +1,30 @@
 T20 연습
-C16 연도별 빈도
-1-1 주상병만 고료
 
+"질병코드 C16"에 대한 연도별 빈도 생성
+
+1-1 주상병만 고려
+
+data T20;
+set Tmp2.nsc2_m20;
+year=substr(MDCARE_STRT_DT,1,4);
+if upcase(substr(SICK_SYM1,1,3))='C16' and
+	"2010"<=year<="2015";
+run;
+
+proc freq data=T20;
+table year;
+run;
 
 1-2 주상병 및 제1부상병 고려
+
+data t20;
+set Tmp2.nsc2_m20;
+year=substr(MDCARE_STRT_DT,1,4);
+if (upcase(substr(SICK_SYM1,1,3))='C16' or
+	upcase(substr(SICK_SYM2,1,3))='C16') and
+	"2010"<=year<="2015";
+run;
+
+proc freq data=t20;
+table year;
+run;
