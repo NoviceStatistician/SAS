@@ -1,0 +1,22 @@
+data pr1;
+input col poster ni @@;
+cards;
+1 1 621 1 2 239
+2 1 89 2 2 42
+;
+run;
+proc freq data=pr1;
+weight ni;
+table col*poster/chisq expected nocol norow nopercent;
+run;
+data pr2;
+input sit dead ni;
+cards;
+1 1 1601 1 2 162527
+2 1 510 2 2 412368
+;
+run;
+proc freq data=pr2;
+weight ni;
+table sit*dead/chisq expected nocol norow nopercent;
+run;
