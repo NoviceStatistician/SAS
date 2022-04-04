@@ -1,0 +1,42 @@
+#동질성 검정
+data example;
+input sex poster ni @@;
+cards;
+1 1 435 1 2 147
+2 1 375 2 2 134
+;
+run;
+proc freq data=example;
+weight ni;
+tables sex*poster/chisq expected nocol norow nopercent;
+run;
+
+#성별 간 혈액형 상관성
+data bl;
+input sex blood ni @@;
+cards;
+1 1 20 1 2 15 1 3 30 1 4 4
+2 1 20 2 2 15 2 3 4 2 4 30
+;
+run;
+proc freq data=bl;
+weight ni;
+tables sex*blood/chisq expected nocol norow nopercent;
+run;
+
+>자유도 3, chi값 39.7647, 유의수준 값으로 H0기각=두 변수 간 상관성이 있다(독립이 아니다.) 
+
+#성별 간 흡연 유무 검정
+data sm;
+input sex smoke ni @@;
+cards;
+1 1 3 1 2 1
+2 1 1 2 2 3
+;
+run;
+proc freq data=sm;
+weight ni;
+table sex*smoke/chisq expected nocol norow nopercent;
+run;
+
+>자유도 1, chi값 2, 유의수준 0.1573로 H0채택.
