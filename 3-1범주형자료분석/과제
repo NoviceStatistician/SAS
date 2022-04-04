@@ -1,3 +1,4 @@
+option validvarname=any;
 data pr1;
 input col poster ni @@;
 cards;
@@ -9,8 +10,11 @@ proc freq data=pr1;
 weight ni;
 table col*poster/chisq expected nocol norow nopercent;
 run;
+/*카이제곱 동질성 검정
+자유도 1, 카이제곱 값 1.02
+유의수준이 0.31로 0.05를 넘기 때문에 H0 채택. 각 모집단의 확률표본에 대하여 모든 범주의 확률이 동일하다.*/
 data pr2;
-input sit dead ni;
+input sit dead ni @@;
 cards;
 1 1 1601 1 2 162527
 2 1 510 2 2 412368
@@ -20,3 +24,21 @@ proc freq data=pr2;
 weight ni;
 table sit*dead/chisq expected nocol norow nopercent;
 run;
+/*카이제곱 독립성 검정
+자유도 1, 카이제곱 값 2338.41, 유의수준이 0.05를 넘지 않기 때문에 H0기각. 두 변수 간의 상관성이 존재한다.*/
+data pr3;
+input pain pill ni @@;
+cards;
+1 1 105 1 2 8
+2 1 12 2 2 2
+3 1 18 3 2 19
+4 1 47 4 2 52
+5 1 0 5 2 13
+;
+run;
+proc freq data=pr3;
+weight ni;
+table pain*pill/chisq expected nocol norow nopercent;
+run;
+/*카이제곱 독립성 검정
+자유도 4, 카이제곱 값 84.19, 유의수준이 0.05를 넘지 않기 때문에 H0기각. 두 변수 간의 상관성이 존재한다.*/
