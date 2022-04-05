@@ -1,0 +1,19 @@
+1 모든 상병을 고려하였을 때 연도별 위암 명세서 건수 및 환자 수
+*배제된 상병은 제외
+
+data T40_pr1;
+set Tmp1.nsc2_m40;
+if "2010"<=std_yyyy<="2015"and upcase(substr(MCEX_SICK_SYM,1,3))="C16" and SICK_CLSF_TYPE^="3";
+run;
+proc sort data= T40_pr1 out= T40_pr1_count nodupkey;
+by rn_key;
+run;
+proc freq data=T40_pr1_count;
+table std_yyyy;
+run;
+proc sort data= T40_pr1 out=T40_pr1_per nodupkey;
+by year rn_indi;
+run;
+proc freq data=T40_pr1_per;
+table std_yyyy;
+run;
