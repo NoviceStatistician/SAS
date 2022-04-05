@@ -65,3 +65,21 @@ run;
 
 3 주상병을 고려하였을 때 연도별 위암 환자 당 총비용(개인부담+국가부담/심결요양급여비용총액) 평균
 동일 환자가 같은 연도에 여러번 있으면 합쳐야 함.(특정 그룹 별 합)
+
+data T20_money;
+set Tmp1.nsc2_m20;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and upcase(substr(SICK_SYM1,1,3))="C16";
+run;
+
+proc sql;
+create table cost_sum as
+select year, RN_INDI, sum(ED_RC_TOT_AMT) as sum
+from T20_money
+group by year, RN_INDI;
+quit;
+
+proc means data=cost_sum n mean std;
+var sum;
+class year;
+run;
