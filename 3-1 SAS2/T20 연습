@@ -28,3 +28,5 @@ run;
 proc freq data=t20;
 table year;
 run;
+
+2  주상병을 고려하였을 때 연도별(2010~2015) 위암 의과입원 환자 수
