@@ -11,6 +11,7 @@ weight ni;
 tables sex*poster/chisq expected nocol norow nopercent;
 run;
 
+
 #성별 간 혈액형 상관성
 data bl;
 input sex blood ni @@;
@@ -26,6 +27,7 @@ run;
 
 >자유도 3, chi값 39.7647, 유의수준 값으로 H0기각=두 변수 간 상관성이 있다(독립이 아니다.) 
 
+
 #성별 간 흡연 유무 검정
 data sm;
 input sex smoke ni @@;
@@ -40,3 +42,22 @@ table sex*smoke/chisq expected nocol norow nopercent;
 run;
 
 >자유도 1, chi값 2, 유의수준 0.1573로 H0채택.
+
+
+#순서자료에서의 독립성 검정
+data example;
+input alcohol y ni @@;
+cards;
+1 0 17066 1 0.5 14464 1 1.5 788 1 4.0
+125 1 7.0 37
+2 0 48 2 0.5 38 2 1.5 5 2 4.0
+1 2 7.0 1
+;
+run;
+/*alcohol 명목척도 1-안함 2-함/ y는 순서척도*/
+
+proc freq data=example;
+weight ni;
+tables alcohol*y/trend;
+run;
+/*p-val 값 결과 통계적으로 유의미한 결과가 나옴. H0기각*/
