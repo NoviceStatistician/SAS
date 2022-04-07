@@ -17,3 +17,79 @@ run;
 proc freq data=T40_pr1_per;
 table std_yyyy;
 run;
+
+2. 모든 상병을 고려하였을 때 연도별 의과입원, 외과외래 환자 수
+option validvarname=any;
+
+data T40;
+set Tmp3.nsc2_m40;
+if "2010"<=std_yyyy<="2015";
+run;
+
+proc sql;
+create table T40_fr2 as
+select a.*,b.FORM_CD as 서식구분
+from T40 as a
+left join Tmp3.Nsc2_m20 as b on
+a.RN_key=b.RN_key;
+quit;
+
+data t40_fr2_2;
+set t40_fr2;
+if 서식구분="02" then 입원=1;
+else if 서식구분="03" then 입원=0;
+run;
+
+proc sort data=t40_pr2_2 out=t40_fr2_year_p nodupkey;
+by year RN_INDI 입원;
+run;
+
+proc feq data=t40_pr2_year_p;
+table year*입원/nopercent norow nocol;
+run;
+
+3 모든 상병을 고려하였을 때 연도별 수술/미수술 환자 수.
+ 단 한 해에 수술 방문과 미수술 방문이 있는 환자는 수술군에 포함
+ option validvarname=any;
+data T40;
+set Tmp3.nsc2_m40;
+if SICK_CLSF_TYPE in(1,2) and "2010"<=std_yyyy<="2015" 
+and upcase(substr(MCEX_SICK_SYM,1,3))="C16";
+run;
+proc sql;
+create table T40_pr3 as
+select a.*,b.OPRTN_YN from T40 as a
+left join Tmp3.Nsc2_m20 as b on
+a.RN_key=b.RN_key;
+quit;
+proc freq data=T40_pr3;
+table OPRTN_YN;
+run;/*확인용*/
+data t40_pr3_2;
+set t40_pr3;
+if 수술구분="0" then 수술=0;
+else if 수술구분="9" then 수술=1;
+if 수술=. then delete;
+run;
+proc sort data=t40_pr3_2;
+by std_yyyy RN_INDI desending 수술;
+run;
+proc sort data=t40_pr3_2;
+by std_yyy rn_indi;
+run;
+proc freq data=t40_pr3_2;
+table std_yyyy*수술구분/nopercent norow nocol;
+run;
+
+/*지만 이렇게 하면 더 빨리 됨*/
+proc sql;
+create table t40_20_op as
+select std_yyyy, rn_indi, max(수술) as 수술구분
+from t40_pr3_2
+group by std_yyyy, rm_indi;
+quit;
+proc freq data=t40_20_op;
+table std_yyyy*수술구분/nopercent norow nocol;
+run;
+ 
+ 
