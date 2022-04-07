@@ -56,12 +56,14 @@ set Tmp3.nsc2_m40;
 if SICK_CLSF_TYPE in(1,2) and "2010"<=std_yyyy<="2015" 
 and upcase(substr(MCEX_SICK_SYM,1,3))="C16";
 run;
+
 proc sql;
 create table T40_pr3 as
 select a.*,b.OPRTN_YN from T40 as a
 left join Tmp3.Nsc2_m20 as b on
 a.RN_key=b.RN_key;
 quit;
+
 proc freq data=T40_pr3;
 table OPRTN_YN;
 run;/*확인용*/
@@ -71,12 +73,15 @@ if 수술구분="0" then 수술=0;
 else if 수술구분="9" then 수술=1;
 if 수술=. then delete;
 run;
+
 proc sort data=t40_pr3_2;
 by std_yyyy RN_INDI desending 수술;
 run;
+
 proc sort data=t40_pr3_2;
 by std_yyy rn_indi;
 run;
+
 proc freq data=t40_pr3_2;
 table std_yyyy*수술구분/nopercent norow nocol;
 run;
@@ -88,6 +93,7 @@ select std_yyyy, rn_indi, max(수술) as 수술구분
 from t40_pr3_2
 group by std_yyyy, rm_indi;
 quit;
+
 proc freq data=t40_20_op;
 table std_yyyy*수술구분/nopercent norow nocol;
 run;
