@@ -30,6 +30,15 @@ proc freq data=pr1;
 weight count;
 table  z*x*y/cmh;
 run;
+/*
+1. H0: θ XY(1)=θ XY(2)=1
+   H1: not H0
+2. alph=.0.05
+3. CMH= 5.7959~x^2(1)
+4. 유의수준을 넘지 않기 때문에 귀무가설 기각
+5. 독립성을 만족하지 않는다.
+(but, 조건부 독립성을 만족한다면 모든 변수는 독립적인 것임. 귀무가설이 기각 되었을 때 결과가 나오는거)
+*/
 
 
 data pr2;
@@ -45,3 +54,11 @@ proc freq data=pr2;
 weight count;
 table hos*sur*res/cmh;
 run;
+/*
+1. H0: θ XY(1)=θ XY(2)=1
+   H1: not H0
+2. alph=.0.05
+3. CMH= 0~x^2(1)
+4. p-val이 1이기 때문에 귀무가설을 기각할 수 없다.
+5. 따라서 유의수준 0.05를 기준으로 통계학적으로 유의한 관련성 없다. X와 Y는 서로 독립이다.
+*/
