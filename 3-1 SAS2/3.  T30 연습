@@ -30,3 +30,22 @@ by year;
 id 비용청구;
 var total;
 run;
+
+/*
+바로 해도 값이 나옴.
+proc sql;
+create table pr1_sql as
+select year, 비용청구 ,sum(AMT) as total
+from pr1
+group by year, 비용청구;
+quit;
+
+proc transpose data=pr1_sql out=ex_sql;
+by year;
+id 비용청구;
+var total;
+run;
+*/
+
+
+2. 위암(주상병만 고려) 명세서의 연도별(2010-2015) 입원료 총합
