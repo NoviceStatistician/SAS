@@ -1,5 +1,6 @@
-1. 2010-2015년도에 생성된 명세서의 연도별 입원료총합과 검사료 총합
+1. 2010-2015년도에 생성된 명세서의 연도별 입원료(02) 총합과 검사료(09) 총합
 
+-내거 
 option validvarname=any;
 data t30;
 set Tmp1.nsc2_m30;
@@ -47,5 +48,38 @@ var total;
 run;
 */
 
+-다른 조거
+
+
+-교수님거
+
+
+
 
 2. 위암(주상병만 고려) 명세서의 연도별(2010-2015) 입원료 총합
+/*
+오답
+내가 하던거
+
+data pr2;
+set pr2_t30_20;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" CLA_CD="09";
+run;
+
+proc sql;
+create table pr2_t30_20 as
+select a.*, b.SICK_SYM1 from t30 as a
+left join Tmp1.nsc2_m20 as b on
+a.RN_key=b.RN_key;
+quit;
+*/
+
+/*상황에 따라 join, left join*/
+
+
+
+-우리조거
+/*c16을 구분하는게 없어서 안나옴*/
+
+-교수님거
