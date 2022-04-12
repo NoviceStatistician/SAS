@@ -1,1 +1,32 @@
 1. 2010-2015년도에 생성된 명세서의 연도별 입원료총합과 검사료 총합
+
+option validvarname=any;
+data t30;
+set Tmp1.nsc2_m30;
+run;
+
+data pr1;
+set t30;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015";
+if CLA_CD="02" then 비용청구="02";
+else if CLA_CD="09" then 비용청구="09";
+else delete;
+run;
+
+proc sql;
+create table pr1_sql as
+select year, 비용청구 ,sum(AMT) as total
+from pr1
+group by year, 비용청구;
+quit;
+
+proc sort data=pr1_sql out=ex1 nodupkey;
+by year 비용청구;
+run;
+
+proc transpose data=ex1 out=ex1_re;
+by year;
+id 비용청구;
+var total;
+run;
