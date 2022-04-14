@@ -161,7 +161,8 @@ run;
 onestep
 
 proc sql;
-
+create table pr4 as
+select a.*, substr(a.)
 
 */
 
