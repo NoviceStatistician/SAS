@@ -88,7 +88,28 @@ quit;
 
 
 3. 위 수술 명세서 건수
+option validvarname=any;
+data t30;
+set Tmp1.nsc2_m30;
+run;
 
+proc import
+datafile='C:\Users\OWNER\Downloads\참고4_위암수술코드.xlsx'
+out=cord dbms=xlsx replace;
+sheet="Sheet1";
+run;
+
+data pr3_c;
+set t30;
+위수술=substr(MCARE_DIV_CD,1, 5);
+run;
+proc sql;
+create table pr3 as
+select a.*, b.구분 
+from pr3_c as a
+join cord as b on
+a.위수술=b.코드;
+quit;
 
 
 4. 연도별(2010-2015) 내시경/위절제술 명세서 건수
