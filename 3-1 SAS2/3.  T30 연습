@@ -110,6 +110,38 @@ from pr3_c as a
 join cord as b on
 a.위수술=b.코드;
 quit;
+proc sort data=pr3 out=pr3_e_m nodupkey;
+by rn_key;
+run;
+
+/*
+one step
+
+option validvarname=any;
+data t30;
+set Tmp1.nsc2_m30;
+run;
+
+proc import
+datafile='C:\Users\OWNER\Downloads\참고4_위암수술코드.xlsx'
+out=cord dbms=xlsx replace;
+sheet="Sheet1";
+run;
+
+proc sql;
+create table pr3 as
+select a.* 
+from t30 as a
+join cord as b on
+substr(a.MCARE_DIV_CD,1,5)=substr(b.코드,1,5);
+quit;
+ proc sort data=pr3 out=pr3_e_m nodupkey;
+by rn_key;
+run;
+
+
+
+*/
 
 
 4. 연도별(2010-2015) 내시경/위절제술 명세서 건수
