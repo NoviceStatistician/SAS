@@ -130,7 +130,7 @@ run;
 
 proc sql;
 create table pr3 as
-select a.* 
+select a.*, b.구분
 from t30 as a
 join cord as b on
 substr(a.MCARE_DIV_CD,1,5)=substr(b.코드,1,5);
@@ -145,9 +145,28 @@ run;
 
 
 4. 연도별(2010-2015) 내시경/위절제술 명세서 건수
+data pr4;
+set pr3_e_m;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015";
+run;
+proc sort data=pr4 out=pr4_s nodupkey;
+by RN_KEY 구분;
+run;
+proc freq data=pr4_s;
+table year*구분/nopercent norow nocol;
+run;
 
+/
+onestep
+
+proc sql;
+
+
+*/
 
 5. 위암(주상병만 고려)에 의한 연도별 (2010-2015) 수술 건수
+
 
 
 6. 위암(모든 상병 고려)에 의한 연도별(2010-2015) 수술 건수
