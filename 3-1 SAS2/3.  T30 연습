@@ -240,4 +240,9 @@ run;
 
  -case when 사용하면
  
+proc sql;
+create ex7 as
+select a.*, substr(a.MDCARE_STRT_DT, 1, 4) as year
+from NHIS.NSC2_M30 as a 
+join s as b on
 
