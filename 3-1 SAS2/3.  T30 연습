@@ -1,10 +1,18 @@
-1. 2010-2015년도에 생성된 명세서의 연도별 입원료(02) 총합과 검사료(09) 총합
-
--내거 
 option validvarname=any;
+
 data t30;
 set Tmp1.nsc2_m30;
 run;
+
+proc import
+datafile='C:\Users\OWNER\Downloads\참고4_위암수술코드.xlsx'
+out=cord dbms=xlsx replace;
+sheet="Sheet1";
+run;
+
+1. 2010-2015년도에 생성된 명세서의 연도별 입원료(02) 총합과 검사료(09) 총합
+
+-내거 
 
 data pr1;
 set t30;
@@ -88,17 +96,6 @@ quit;
 
 
 3. 위 수술 명세서 건수
-option validvarname=any;
-data t30;
-set Tmp1.nsc2_m30;
-run;
-
-proc import
-datafile='C:\Users\OWNER\Downloads\참고4_위암수술코드.xlsx'
-out=cord dbms=xlsx replace;
-sheet="Sheet1";
-run;
-
 data pr3_c;
 set t30;
 위수술=substr(MCARE_DIV_CD,1, 5);
@@ -168,8 +165,55 @@ select a.*, substr(a.)
 
 5. 위암(주상병만 고려)에 의한 연도별 (2010-2015) 수술 건수
 
+proc sql;
+create table pr5 as
+select a.*, b.구분, substr(MDCARE_STRT_DT,1,4) as year
+from t30 as a
+join cord as b on
+substr(MCARE_DIV_CD, 1, 5)=substr(b.코드, 1, 5)
+where "2010"<=calculated year<="2015";
+quit;
+
+proc sql;
+create table pr5_r as 
+select a.*, substr(b.SICK_SYM1,1,3) as 위암
+from pr5 as a
+left join Tmp1.Nsc2_m20 as b on
+a.RN_KEY=b.RN_KEY
+where calculated 위암="C16";
+quit;
+
+proc freq data=pr5_r;
+table year*위암/nocol norow nopercent;
+run;
 
 
 6. 위암(모든 상병 고려)에 의한 연도별(2010-2015) 수술 건수
+
+proc sql;
+create table pr6 as
+select a.*, b.구분, substr(MDCARE_STRT_DT,1,4) as year
+from t30 as a
+join cord as b on
+substr(MCARE_DIV_CD, 1, 5)=substr(b.코드, 1, 5)
+where "2010"<=calculated year<="2015";
+quit;
+
+proc sql;
+create table pr6_r as
+select a.*, substr(b.MCEX_SICK_SYM,1,3) as 위암, b.SICK_CLSF_TYPE as 상병
+from pr6 as a
+left join Tmp1.Nsc2_m40 as b on
+a.RN_KEY=b.RN_KEY
+where calculated 위암="C16" and (상병="1" or "2");
+quit;
+
+proc freq data=pr6_r;
+table year*위암/nocol norow nopercent;
+run;
+
+
+7. 위암(주상병만 고려)을 제외한 연도별(2010~2015) 수술 건수
+
 
 
