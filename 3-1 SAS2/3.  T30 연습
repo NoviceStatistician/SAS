@@ -238,3 +238,6 @@ proc freq data=pr7_r;
 table year/nocol norow nopercent;
 run;
 
+ -case when 사용하면
+ 
+
