@@ -1,0 +1,13 @@
+/*연속형변수*/
+proc genmod data=glm;
+model disease/total=snoring/dist=bin link=identity;
+output out=a1 pred=pred; #결과를 sas 데이터로 저장
+run;
+
+/*범주형으로 변환=>class 사용
+해석시 주의*/
+proc genmod data=glm;
+class snoring(ref="2");  #2를 기준으로 나머지를 해석
+model disease/total=snoring/dist=bin link=identity type3;
+output out=a2 pred=pred;
+run;
