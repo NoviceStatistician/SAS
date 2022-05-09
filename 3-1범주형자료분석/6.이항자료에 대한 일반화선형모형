@@ -1,3 +1,13 @@
+data glm;
+input snoring disease total;
+cards;
+0 24 1379
+2 35 638
+4 21 213
+5 30 254
+;
+run;
+
 /*연속형변수*/
 proc genmod data=glm;
 model disease/total=snoring/dist=bin link=identity;
@@ -11,3 +21,20 @@ class snoring(ref="2");  #2를 기준으로 나머지를 해석
 model disease/total=snoring/dist=bin link=identity type3;
 output out=a2 pred=pred;
 run;
+
+
+
+/*로지스틱 회귀모형 -항등함수의 단점을 보완하기 위한 모형*/
+/*link function에 항등함수를 제외한 다른 함수를 쓰면 beta를 바로 해석할 수 없음.
+logit함수는 exp(beta)로 한 OR값을 해석해야 한다.*/
+proc genmod data=glm;
+model disease/total=snoring/dist=bin link=logit;
+run;
+
+/*범주형으로 변환*/
+proc genmod data=glm;
+class snoring(ref="2");
+model disease/total=snoring/dist=bin link=logit;
+run;
+
+
