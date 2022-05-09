@@ -8,6 +8,14 @@ cards;
 ;
 run;
 
+proc import
+datafile="C:\Users\OWNER\Downloads\crab.xlsx"
+out=crab dbms=xlsx replace;
+sheet="crab";
+run;
+
+
+
 /*연속형변수*/
 proc genmod data=glm;
 model disease/total=snoring/dist=bin link=identity;
@@ -29,12 +37,14 @@ run;
 logit함수는 exp(beta)로 한 OR값을 해석해야 한다.*/
 proc genmod data=glm;
 model disease/total=snoring/dist=bin link=logit;
+output out=b1 pred=pred;
 run;
 
 /*범주형으로 변환*/
 proc genmod data=glm;
-class snoring(ref="2");
+class snoring(ref="2"); /*ref에 상관없이 확률은 같음. alpha값이 ref에 따라 바뀜*/
 model disease/total=snoring/dist=bin link=logit;
+output out=b2 pred=pred;
 run;
 
 
