@@ -1,0 +1,33 @@
+1.연도별(2010-2015) 원내 처방된 항암제 청구 명세서 건수 및 환자 수
+data pr1;
+set t30;
+year=substr(MDCARE_STRT_DT,1,4);
+항암제=substr(MCARE_DIV_CD,1,5);
+if "2010"<=year<="2015" and 항암제="13900";
+run;
+
+proc sort data=pr1 out=pr1_a nodupkey;
+by RN_KEY;
+run;
+
+proc freq data=pr1_a;
+table year;
+run;
+
+proc sort data=pr1 out=pr1_b nodupkey;
+by RN_INDI;
+run;
+
+proc freq data=pr1_b;
+table year;
+run;
+
+/*4번*/
+proc sql;
+create table pr4 as
+select a.*, b.substr(SICK_SYM1,1,3) as 위암, b.RN_KEY
+from pr1 as a
+left join Tmp1.Nsc2_m20 as b on
+a.RN_KEY=b.RN_KEY
+where 항암제="13900" and calculated 위암="C16";
+quit;
