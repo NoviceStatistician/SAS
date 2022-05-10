@@ -27,3 +27,6 @@ from m as a
 join p as b on
 a.year=b.year;
 quit;
+
+
+/*2번*/
