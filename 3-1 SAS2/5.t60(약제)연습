@@ -1,0 +1,29 @@
+/*1번*/
+data t60;
+set Tmp1.nsc2_m60;
+run;
+
+data t60_pr1;
+set t60;
+year=substr(MDCARE_STRT_DT,1,4);
+카바딜=substr(GNL_NM_CD,1,9);
+if "2010"<=year<="2015" and 카바딜="423700ATB";
+run;
+%macro ff(var, out);
+proc sort data=t60_pr1 out=t60_pr1_a nodupkey;
+by year &var;
+run;
+
+proc freq data=t60_pr1_a noprint;
+table year/out=&out;
+run;
+%mend;
+%%ff(rn_key, m); %ff(rn_indi, p);
+
+proc sql;
+create table result as
+select a.year, a.count as 명세서수, b.count as 환자수
+from m as a 
+join p as b on
+a.year=b.year;
+quit;
