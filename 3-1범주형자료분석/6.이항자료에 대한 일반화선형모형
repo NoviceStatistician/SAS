@@ -48,3 +48,32 @@ output out=b2 pred=pred;
 run;
 
 
+
+/*포아송회귀(도수 자료에 대한 일반화선형모형)*/
+proc genmod data=crab;
+model satell=width/dist=poi link=log;
+run;
+
+/*율자료에 대한 포아송회귀*/
+data crab2;
+input wigth cases satell @@;
+log_case=log(cases);
+cards;
+22.69 14 14 23.84 14 20 24.77 28 67 25.84 39 105
+26.79 22 63 27.74 24 93 28.67 18 71 30.41 14 72
+;
+run;
+/**/
+proc genmod data=crab2;
+model satell=wigth/dist=poi link=identity offset=cases;
+run;
+
+
+/*로지스틱 회귀 할 때, rare event 문제 발생하면 프로빗 회귀로 함. 
+하지만 프로빗의 결정적인 문제가 or로 설명이 안되고, 각 범주 별 수치적 차이 비교 불가 
+범주를 줄이는 등 재범주화 시키면 rare event를 없앨 수 있음.
+재범주를 할 때는, 연구 전문가의 의견을 수렴하여 재범주 해야 함.*/
+
+
+
+https://aispiration.com/r-algorithm/
