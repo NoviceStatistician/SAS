@@ -63,9 +63,9 @@ cards;
 26.79 22 63 27.74 24 93 28.67 18 71 30.41 14 72
 ;
 run;
-/**/
+
 proc genmod data=crab2;
-model satell=wigth/dist=poi link=identity offset=cases;
+model satell=wigth/dist=poi link=identity offset="1";
 run;
 
 
