@@ -56,3 +56,67 @@ from t60_pr2_s_a as a
 left join t60_pr2_s_b  as b on
 a.year=b.year;
 quit;
+
+/*2번 교수님꺼*/
+/*각 환자 id당 연도별 몇 번 방문했는지 데이터셋을 만들어야 나중에 표준편차 등을 구할 수 있음*/
+data t60_pr2;
+set t60;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and GNL_NM_CD="423700ATB";
+run;
+
+proc sort data=t60_pr2 out=t60_pr2_s nodupkey;
+by RN_KEY;
+run;
+
+proc sql; /*매우 자주 사용하는 코드, 스킬 체화 필요.*/
+create table p_count as
+select year, rn_indi, count(rn_key) as count
+from t60_pr2_s
+group by year, rn_indi;
+quit;
+
+proc means data=p_count mean;
+class year;
+var count;
+run;
+
+
+/*3번*/
+data t60_pr3;
+set t60;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and GNL_NM_CD="423700ATB";
+run;
+
+proc sql;
+create table k_count as
+select year, rn_key, sum(tot_mcnt) as 총투여일수
+from t60_pr3
+group by year, rn_key;
+quit;
+
+proc means data=k_count mean std;
+class year;
+var 총투여일수;
+run;
+
+/* 교수님거
+data t60_pr3;
+set t60;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and GNL_NM_CD="423700ATB";
+run;
+
+proc sql;
+create table sum as
+select year, rn_key, sum(tot_mcnt) as 총투여일수
+from t60_pr3
+group by year, rn_key;
+
+create table means as
+select year, count(rn_key) as n, mean(총투여일수) as 평균투여일수
+from sum
+group by year;
+quit;
+*/
