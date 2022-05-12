@@ -30,3 +30,29 @@ quit;
 
 
 /*2번*/
+data t60_pr2;
+set t60;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and GNL_NM_CD="423700ATB";
+c=1;
+run;
+proc sort data=t60_pr2 out=t60_pr2_s nodupkey;
+by RN_INDI year;
+run;
+proc sql;
+create table t60_pr2_s_a as
+select year, sum(c) as some
+from t60_pr2 as a
+group by year;
+
+create table t60_pr2_s_b as
+select b.year, count(RN_KEY) as 환자수
+from t60_pr2_s as b
+group by year;
+
+create table t60_pr2_s_c as
+select a.year, b.환자수, round(some/환자수,0.01) as  평균명세서
+from t60_pr2_s_a as a
+left join t60_pr2_s_b  as b on
+a.year=b.year;
+quit;
