@@ -1,0 +1,3 @@
+proc logistic data=crab;
+model y(event='1')=width/covb lackfit;
+run;
