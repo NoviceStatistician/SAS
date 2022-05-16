@@ -1,3 +1,22 @@
-proc logistic data=crab;
+/*로지스틱 회귀 모형*/
+proc import
+datafile="C:\Users\OWNER\Downloads\crab.xlsx"
+out=crab dbms=xlsx replace;
+sheet="crab";
+run;
+
+data crab1;
+set crab;
+if satell=0 then y=0; /*양적변수의 이분화*/
+else if satell>0 then y=1;
+else y=9999; /*결측확인*/
+run;
+
+proc freq data=crab1;
+table y;
+run;
+
+proc logistic data=crab1;
 model y(event='1')=width/covb lackfit;
 run;
+
