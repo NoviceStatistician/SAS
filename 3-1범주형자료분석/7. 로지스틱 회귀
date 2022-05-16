@@ -20,3 +20,24 @@ proc logistic data=crab1;
 model y(event='1')=width/covb lackfit;
 run;
 
+x가 20일 때, 위성이 있을 확률과 그 C.I
+in R
+a<-(-12.3508); b<-0.4972
+vara<-6.910227;varb<-0.01035
+covab<-c(-0.26685)
+x=20
+varab<-vara+(x^2*varb)+(x*2*covab)
+ASE<-sqrt(varab);abx<-(a+(b*x))
+up<-abx+(1.96*ASE);low<-abx-(1.96*ASE)
+pix<-exp(abx)/(1+exp(abx))
+up_pix_ci<-exp(up)/(1+exp(up));low_pix_ci<-exp(low)/(1+exp(low))
+
+/*추정된 확률의 신뢰구간*/
+/*확률 추정치의 분포(분산)*/
+/*covb사용.*/
+
+/*crab무게와 위성의 관련성*/
+proc logistic data=crab1;
+model y(event='1')=weight/covb lackfit;
+run;
+무게가 3키로일 때 위성이 있을 확률과 C.I
