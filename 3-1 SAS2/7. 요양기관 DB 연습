@@ -1,3 +1,102 @@
 option validvarname=any;
 
 /*1번*/
+data t20;
+set Tmp1.nsc2_m20;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and substr(sick_sym1,1,3)="C16";
+run;
+
+proc sql;
+create table inst as
+select a.*, substr(b.sgg_inst,1,2) as 시도
+from t20 as a
+left join Tmp1.nsc2_inst as b on
+a.rn_inst =b.rn_inst and a.year=b.std_yyyy;
+quit;
+
+proc freq data=inst noprint;
+table 시도/out=aa;
+run;
+
+proc sort data=inst;
+by rn_indi desending mdcare_strt_dt;
+run;
+
+proc sort data=inst out=patient nodupkey;
+by rn_indi;
+run;
+
+proc freq data=patient noprint;
+table 시도/out=bb;
+run;
+
+proc sql;
+create table ex1 as
+select a.시도, a.count as 명세서수, b.count as 환자수
+from aa as a
+left join bb as b on
+a.시도=b.시도;
+quit;
+
+
+/*2번*/
+data t20;
+set Tmp1.nsc2_m20;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and substr(sick_sym1,1,3)="C16";
+run;
+
+proc sql;
+create table inst as
+select a.*, b.cnt_dr_tot as 의사수, substr(b.sgg_inst,1,2) as 시도
+from t20 as a
+left join Tmp1.nsc2_inst as b on
+a.rn_inst =b.rn_inst and a.year=b.std_yyyy;
+quit;
+
+proc sort data=inst;
+by rn_indi desending std_yyyy;
+run;
+
+proc sort data=inst out=inst_u nodupkey;
+by rn_indi;
+run;
+
+proc means data=inst_u noprint;
+class 시도;
+var 의사수;
+output out=r n=n mean=mean;
+run;
+
+data result;
+set r;
+if 시도="" then delete;
+의사수평균=round(mean, 1);
+keep 시도 n 의사수평균;
+run;
+
+/*3번*/
+data t40;
+set Tmp1.nsc2_m40;
+year=substr(MDCARE_STRT_DT,1,4);
+if "2010"<=year<="2015" and substr(mcex_sick_sym,1,3)="C16"
+and sick_clsf_type in (1,2);
+run;
+proc sort data=t40 out=t40_u nodupkey;
+by rn_key;
+run;
+proc sql;
+create t40_20 as
+select a.*, b.rn_inst
+from t40_u as a
+join Tmp1.nsc2_rn20 as b on
+a.rn_key=b.rn_key;
+quit;
+proc sql;
+create table inst as
+select a.*, substr(b.sgg_inst,1,2) as 시도
+from t40_20 as a
+left join Tmp1.nsc2_inst as b on
+a.rn_inst =b.rn_inst and a.year=b.std_yyyy;
+quit;
