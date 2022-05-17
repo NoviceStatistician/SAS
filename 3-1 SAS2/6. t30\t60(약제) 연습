@@ -41,3 +41,8 @@ id 내과구분;
 by year;
 var count;
 run;
+
+data result;
+set result4;
+drop _name_ _label_;
+run;
