@@ -41,3 +41,29 @@ proc logistic data=crab1;
 model y(event='1')=weight/covb lackfit;
 run;
 무게가 3키로일 때 위성이 있을 확률과 C.I
+
+
+/*color가 2일 때의 확률과 신뢰구간*/
+proc logistic data=crab1;
+class color(ref='4')/param=ref;/*color이 숫자형 범주이지만, 문자형 변수로 취급할거야
+항상 ref 지정해주고, param=ref 해줘야 ref와 다른 범주 비교해줌.*/
+model y(event='1')=color/covb lackfit;
+run;/*Type 3 Analysis of Effects의 p-val이 alph값을 넘어야 다른게 의마가 있음.
+Odds Ratio Estimates를 보면 1번이 4번에 비해 숫게 위성을 약 6.4배 더 잘 꼬심.
+색이 어두위질 수록 점점 줄어든다.*/
+/*Estimated Covariance Matrix
+color가 2일 때의 분산=a+x1b1+x2b2+x3b3/b=010
+so, Var(a+b2)=Var a+Var b2+Cov(a, b2)=0.050059+0.076536-0.03682
+sqrt(var(a+b2))=ASE
+신뢰구간=a+b2-1.96*ASE~a+b2+1.96*ASE*/
+
+/*spine이 2, 3 일 때, 확률과 신뢰구간/참조변수=1*/
+proc logistic data=crab1;
+class spine(ref='1')/param=ref;
+model y(event='1')=spine/covb lackfit;
+output out=aa pred=p lower=low upper=up;
+/*소수 4째자리 같은 경우 손계산이랑 약간의 차이가 있음. 각각의 확률과 ci구해줌.*/
+run;
+/*Analysis of Maximum Likelihood Estimates를 보면 2와 3 사이에 약 0.7 정도의 차이만 있음
+>둘 사이 차이 없음.
+Type 3 Analysis of Effects를 봐도 차이가 없음.*/
