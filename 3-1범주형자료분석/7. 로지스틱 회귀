@@ -67,3 +67,106 @@ run;
 /*Analysis of Maximum Likelihood Estimates를 보면 2와 3 사이에 약 0.7 정도의 차이만 있음
 >둘 사이 차이 없음.
 Type 3 Analysis of Effects를 봐도 차이가 없음.*/
+
+
+/*다중 로지스틱 회귀*/
+data crab2;
+set crab;
+if satell=0 then y=0; /*양적변수의 이분화*/
+else if satell>0 then y=1;
+else y=9999; /*결측확인*/
+run;
+
+proc genmod data=crab2;
+class color;
+model y=color width/dist=bin link=logit type3;
+run;
+
+/*여러 개 예측변수일 때 모형 선택*/
+proc genmod data=crab2;
+class color spine;
+model y=color spine width/dist=bin link=logit type3;
+run;
+
+proc genmod data=crab2;
+class color spine;
+model y=color spine weight/dist=bin link=logit type3;
+run;
+
+/*backward selection(다넣고 빼기)(밑의 식은 이거임/
+forward selection(다빼고 넣기)/stepwise selection(넣다 뺐다)*/
+proc logistic data=crab2;
+class color spine;
+model y=color spine width color*spine color*width spine*color
+spine*width/selection=backward;
+run;/*통계적으로 width만 유의하다. 보정된 값을 볼 때는 이런거 안함.
+교호작용 있을 때는 이 방법 사용함. */
+
+
+/*연습 1) aac bic*/
+
+/*1차*/proc logistic data=crab2;
+class color spine/param=ref ref=first;
+model y(event='1')=color spine width color*spine color*width
+spine*width;
+run;
+
+/*결과*/proc logistic data=crab2;
+class color spine/param=ref ref=first;
+model y(event='1')=width;
+run;
+
+
+/*다중 로지스틱 회귀*/
+data crab2;
+set crab;
+if satell=0 then y=0; /*양적변수의 이분화*/
+else if satell>0 then y=1;
+else y=9999; /*결측확인*/
+run;
+
+proc genmod data=crab2;
+class color;
+model y=color width/dist=bin link=logit type3;
+run;
+
+/*여러 개 예측변수일 때 모형 선택*/
+proc genmod data=crab2;
+class color spine;
+model y=color spine width/dist=bin link=logit type3;
+run;
+
+proc genmod data=crab2;
+class color spine;
+model y=color spine weight/dist=bin link=logit type3;
+run;
+
+/*backward selection(다넣고 빼기)(밑의 식은 이거임/
+forward selection(다빼고 넣기)/stepwise selection(넣다 뺐다)*/
+proc logistic data=crab2;
+class color spine;
+model y=color spine width color*spine color*width spine*color
+spine*width/selection=backward;
+run;/*통계적으로 width만 유의하다. 보정된 값을 볼 때는 이런거 안함.
+교호작용 있을 때는 이 방법 사용함. */
+
+
+/*연습 1) 빼기 는 전통적인 것*/
+
+/*1차*/proc logistic data=crab2;
+class color spine/param=ref ref=first;
+model y(event='1')=color spine width color*spine color*width
+spine*width;
+run;
+
+/*결과*/proc logistic data=crab2;
+class color spine/param=ref ref=first;
+model y(event='1')=width;
+run;
+
+/*연습 2) aac bic는 Model Fit Statistics를 보고 함. 보통 aac bic를 기준으로 하는 것을 자주 씀.*/
+
+/*결과*/proc logistic data=crab2;
+class color spine/param=ref ref=first;
+model y(event='1')=width color;
+run;
