@@ -1,0 +1,51 @@
+/*주성분 분석*/
+proc princomp data=tmp1.protein;
+var x1-x9;
+run;
+
+/*바틀렛구형성 검정 및 kmo*/
+proc factor data=tmp1.protein
+            method=ml nfactors=3 msa;
+var x1-x9;
+run;
+/*Overall MSA = 0.63402443가 0.05넘으니까 인자분석 할 만하겠다*/
+
+
+/*인자분석(주성분 3개 선택)*/
+proc factor data=tmp1.protein
+            method=principal nfactors=3;
+var x1-x9;
+run;
+/*회전 되기 전 factor 패턴 보기, 각각에 해당하는 분산 보기, 
+공통성(Final Communality Estimates: Total = 6.576327) 보기 =0.5넘으니까 적절한 거 알 수 있음*/
+
+
+/*배리맥스 회전*/
+proc factor data=tmp1.protein
+            method=principal nfactors=3 rotate=varimax reorder;
+var x1-x9;
+run;
+/*Orthogonal Transformation Matrix >얼마나 돌렸나? sin cos
+Rotated Factor Pattern >회전된 인자 적재값(인자 적재값은 절대값을 기준으로 판단함. +-무시하고 구하면 댐. 
+                                          팩터 가로로 비교해서 제일 큰 곳으로 선택하기.
+                                          팩터값이 가로로 모두 0.5 이하면 빼고 계산하면 댐.)
+Variance Explained by Each Factor >회전된 인자 적재값에 대한 분산
+Final Communality Estimates: Total = 6.576327 >회전된 인자 적재값에 대한 공통성
+
+회전되기 전이랑 값이 다름. (공통성은 같음. why? 특수분산 값은 영향을 받지 않고, 이는 공통성을 기준으로 구해진 값이기에)
+*/
+
+
+/*
+각 변수 이름 지어주기
+White Meat+Eggs+Starch+Nuts=White food group
+Red Meat+Milk+Cereal=Retated cow
+Fish+Fruits and Vegetables=Pesco vegetarian
+*/
+
+
+/*전체 분산=9 why? 상관행렬이라 변수 개수=분산값*/
+
+/*인자적재값만 구해졌을 때 
+  분산값? 각 펙터 내 값들의 각 제곱의 합  
+  공통성? 인자적재값들 각 제곱의 합*/
